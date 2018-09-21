@@ -72,14 +72,35 @@ describe('_.objects', function() {
             should(result).be.exactly(true);
         });
 
+        it('sample args const check 1', function () {
+            var a = { "aaa": 1234 }
+            var b = { }
+            var result = _.isDefaultedEqual(a, b);
+            should(result).be.exactly(true);
+            should(a.aaa).be.exactly(1234);
+            should.not.exist(b.aaa);
+        });
+
+        it('sample args const check 2', function () {
+            var a = { }
+            var b = { "aaa": 1234 }
+            var result = _.isDefaultedEqual(a, b);
+            should(result).be.exactly(false);
+            should.not.exist(a.aaa);
+            should(b.aaa).be.exactly(1234);
+        });
+
+
         it('sample negative 1', function () {
             var a = { "aaa": 1234, "bbb": { "ccc" : true, "ddd" : "zzzz"}}
             var b = { "aaa": 123, "bbb": { "ddd" : "zzzz", "ccc" : true}}
             var result = _.isDefaultedEqual(a, b);
             should(result).be.exactly(false);
+            should(a.aaa).be.exactly(1234);
+            should(b.aaa).be.exactly(123);
         });
 
-        it('sample negative 2', function () {
+        it('sample negative array order', function () {
             var a = { "aaa": 1234, "bbb": { "ccc" : true, "ddd" : "zzzz", "eee": [1, 3, 4]}}
             var b = { "aaa": 1234, "bbb": { "ddd" : "zzzz", "ccc" : true, "eee": [1, 3, 5]}}
             var result = _.isDefaultedEqual(a, b);
@@ -128,6 +149,17 @@ describe('_.objects', function() {
             var result = _.isDefaultedEqual(a, b);
             should(result).be.exactly(true);
         });
+
+        it('sample type diff', function () {
+            var a = {
+                "BERLIOZ_IDENTITY": "0"
+            }
+            var b = {
+                "BERLIOZ_IDENTITY": 0
+            }
+            var result = _.isDefaultedEqual(a, b);
+            should(result).be.exactly(false);
+        });
     });
 
 
@@ -135,6 +167,17 @@ describe('_.objects', function() {
         it('sample arrays mixed order', function () {
             var a = [1, 2]
             var b = [2, 1]
+            var result = _.isEqual(a, b);
+            should(result).be.exactly(false);
+        });
+
+        it('sample diff string-int', function () {
+            var a = {
+                "BERLIOZ_IDENTITY": "0"
+            }
+            var b = {
+                "BERLIOZ_IDENTITY": 0
+            }
             var result = _.isEqual(a, b);
             should(result).be.exactly(false);
         });
