@@ -3,8 +3,8 @@ var should = require('should');
 
 var _ = require('../index');
 
-describe('_.nullCheck', function() {
-    describe('isNullOrUndefined function', function() {
+describe('null.js', function() {
+    describe('_.isNullOrUndefined', function() {
         it('null value', function () {
             var result = _.isNullOrUndefined(null);
             should(result).be.exactly(true);
@@ -48,7 +48,7 @@ describe('_.nullCheck', function() {
         });
     });
 
-    describe('isNotNullOrUndefined function', function() {
+    describe('_.isNotNullOrUndefined', function() {
         it('null value', function () {
             var result = _.isNotNullOrUndefined(null);
             should(result).be.exactly(false);

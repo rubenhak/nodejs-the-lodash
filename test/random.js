@@ -3,8 +3,8 @@ var should = require('should');
 
 var _ = require('..');
 
-describe('_.randomElement', function() {
-    describe('randomElement function', function() {
+describe('random.js', function() {
+    describe('_.randomElement', function() {
         it('sample1', function () {
             var items = ["aa", "bb", "cc", "dd"]; 
             var result = _.randomElement(items);

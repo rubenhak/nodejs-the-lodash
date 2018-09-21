@@ -3,8 +3,8 @@ var should = require('should');
 
 var _ = require('../index');
 
-describe('_.makeDict', function() {
-    describe('makeDict function', function() {
+describe('makeDict.js', function() {
+    describe('_.makeDict', function() {
         it('sample1', function () {
             var data = [ ["aa", 123], ["bbb", 456]];
             var result = _.makeDict(data, x => x[0], x => x[1]);
@@ -29,4 +29,14 @@ describe('_.makeDict', function() {
             should(result).be.deepEqual({});
         });
     });
+
+
+    describe('_.makeBoolDict', function() {
+        it('sample1', function () {
+            var data = [ "aaa", "bbb"];
+            var result = _.makeBoolDict(data);
+            should(result).be.deepEqual({aaa: true, bbb: true});
+        });
+    });
+    
 });

@@ -3,9 +3,9 @@ var should = require('should');
 
 var _ = require('../index');
 
-describe('_.objects', function() {
+describe('objects.js', function() {
 
-    describe('fastDeepEqual function', function() {
+    describe('_.fastDeepEqual', function() {
         it('sample positive 1', function () {
             var a = { "aaa": 1234, "bbb": { "ccc" : true, "ddd" : "zzzz"}}
             var b = { "aaa": 1234, "bbb": { "ddd" : "zzzz", "ccc" : true}}
@@ -50,7 +50,7 @@ describe('_.objects', function() {
     });
 
 
-    describe('isDefaultedEqual function', function() {
+    describe('_.isDefaultedEqual', function() {
         it('sample positive 1', function () {
             var a = { "aaa": 1234, "bbb": { "ccc" : true, "ddd" : "zzzz"}}
             var b = { "aaa": 1234, "bbb": { "ddd" : "zzzz", "ccc" : true}}
@@ -163,7 +163,7 @@ describe('_.objects', function() {
     });
 
 
-    describe('isEqual function', function() {
+    describe('_.isEqual', function() {
         it('sample arrays mixed order', function () {
             var a = [1, 2]
             var b = [2, 1]
