@@ -6,5 +6,6 @@ require('./lib/makeArray')
 require('./lib/random')
 require('./lib/objects')
 require('./lib/defaulted-equal')
+require('./lib/string')
 
 module.exports = _;
