@@ -11,10 +11,16 @@ describe('makeArray.js', function() {
             should(result).be.deepEqual(["aaa", "ccc"]);
         });
 
-        it('sample1', function () {
+        it('sample2', function () {
             var data = { };
             var result = _.makeArray(data, (k, v) => v);
             should(result).be.deepEqual([]);
+        });
+
+        it('sample3', function () {
+            var data = { "aaa" : {"kuku" : 1234}, "bbb": {"kaka": 567}, "ccc": {"zizi": 89}};
+            var result = _.makeArray(data, null, (k, v) => v);
+            should(result).be.deepEqual([{"kuku" : 1234}, {"kaka": 567}, {"zizi": 89}]);
         });
     });
 

@@ -1,6 +1,6 @@
 {
   "name": "the-lodash",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,9 +17,9 @@
   },
   "homepage": "https://github.com/rubenhak/nodejs-the-lodash#readme",
   "dependencies": {
-    "fast-deep-equal": "^2.0.1",
-    "fast-json-stable-stringify": "^2.0.0",
-    "lodash": "4.17.10"
+    "fast-deep-equal": "2.0.1",
+    "fast-json-stable-stringify": "2.0.0",
+    "lodash": "4.17.11"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
