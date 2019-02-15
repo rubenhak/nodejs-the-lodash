@@ -7,6 +7,7 @@ require('./lib/random')
 require('./lib/objects')
 require('./lib/defaulted-equal')
 require('./lib/string')
-require('./lib/stableStringify')
+require('./lib/stable-stringify')
+require('./lib/deep-clean')
 
 module.exports = _;
