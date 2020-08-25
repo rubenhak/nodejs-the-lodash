@@ -1,7 +1,8 @@
 import 'mocha';
 import should = require('should');
 
-import * as _ from '../src';
+import _ from '../src';
+import _ = require('lodash');
 
 
 describe('_.deepClean', function() {

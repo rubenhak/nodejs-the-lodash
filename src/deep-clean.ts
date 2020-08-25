@@ -1,16 +1,11 @@
 import * as _ from "lodash";
 
-declare module "lodash" {
-    interface LoDashStatic {
-        deepClean(o : any) : any;
-    }
-    interface LoDashExplicitWrapper<TValue> {
-        deepClean(o : any): LoDashExplicitWrapper<TValue>;
-    }
+interface LoDashMixins extends _.LoDashStatic {
+    deepClean(o : any) : any;
 }
 
 _.mixin({ 
-    deepClean
+    deepClean: deepClean
 });
 
 console.log("AAAA")
@@ -55,3 +50,5 @@ function isObjectPresent(o : any) : boolean
     }
     return true;
 }
+
+export default <LoDashMixins>_;
