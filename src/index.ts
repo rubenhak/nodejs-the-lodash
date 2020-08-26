@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { deepClean } from './deep-clean';
 import { replaceAll } from './string';
 import { isNullOrUndefined, isNotNullOrUndefined } from './null';
@@ -7,35 +7,40 @@ import { isDefaultedEqual, DefaultedEquatorPropMeta } from './defaulted-equal';
 import { makeDict, makeBoolDict } from './make-dict';
 import { stableStringify } from './stable-stringify';
 import { makeArray, makeBoolArray } from './make-array';
-import { randomElement } from './random'
+import { randomElement } from './random';
 
 interface LoDashMixins extends _.LoDashStatic {
-    deepClean(o : any) : any,
+    deepClean(o: any): any;
 
-    replaceAll(str : string, search : string, replacement : string) : string,
+    replaceAll(str: string, search: string, replacement: string): string;
 
-    isNullOrUndefined(obj : any) : boolean,
-    isNotNullOrUndefined(obj : any) : boolean,
+    isNullOrUndefined(obj: any): boolean;
+    isNotNullOrUndefined(obj: any): boolean;
 
-    fastDeepEqual(a: any, b: any) : boolean,
+    fastDeepEqual(a: any, b: any): boolean;
 
-    isDefaultedEqual(current : any, desired : any, arrayMeta? : Record<string, DefaultedEquatorPropMeta>) : boolean,
+    isDefaultedEqual(current: any, desired: any, arrayMeta?: Record<string, DefaultedEquatorPropMeta>): boolean;
 
-    makeDict<V>(items : any[] | null, cbKey: (item: any) => string | number, cbValue: (item: any) => V) : Record<string | number, V>,
-    makeBoolDict(items : any[] | null) : Record<string | number, boolean>,
+    makeDict<V>(
+        items: any[] | null,
+        cbKey: (item: any) => string | number,
+        cbValue: (item: any) => V,
+    ): Record<string | number, V>;
+    makeBoolDict(items: any[] | null): Record<string | number, boolean>;
 
-    stableStringify(x: any) : string,
+    stableStringify(x: any): string;
 
-    makeArray<V>(obj : Record<string, any> | null, 
-        valueCb : (key: string, value: any) => V,
-        filterCb? : (key: string, value: any) => boolean
-        ) : V[],
-    makeBoolArray(obj : Record<string, any> | null) : any[],
+    makeArray<V>(
+        obj: Record<string, any> | null,
+        valueCb: (key: string, value: any) => V,
+        filterCb?: (key: string, value: any) => boolean,
+    ): V[];
+    makeBoolArray(obj: Record<string, any> | null): any[];
 
-    randomElement<V>(obj?: V[]) : V
+    randomElement<V>(obj?: V[]): V;
 }
 
-_.mixin({ 
+_.mixin({
     deepClean: deepClean,
     replaceAll: replaceAll,
     isNullOrUndefined: isNullOrUndefined,
@@ -47,7 +52,7 @@ _.mixin({
     stableStringify: stableStringify,
     makeArray: makeArray,
     makeBoolArray: makeBoolArray,
-    randomElement: randomElement
+    randomElement: randomElement,
 });
 
 const mixedLodash = forceCast<LoDashMixins>(_);

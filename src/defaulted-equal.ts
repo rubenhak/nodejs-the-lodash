@@ -1,15 +1,14 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { isNullOrUndefined, isNotNullOrUndefined } from './null';
 import { makeDict } from './make-dict';
 import { stableStringify } from './stable-stringify';
 
 interface DefaultedEquatorPropMeta {
-    keySelector?: (item: any) => any,
-    valueSelector?: (item: any) => any
+    keySelector?: (item: any) => any;
+    valueSelector?: (item: any) => any;
 }
 
-function defaultKeySelector(x: any) : any
-{
+function defaultKeySelector(x: any): any {
     if (typeof x === 'undefined') {
         return 'not-defined';
     }
@@ -19,12 +18,17 @@ function defaultKeySelector(x: any) : any
     return x;
 }
 
-function defaultValueSelector(x: any) : any
-{
+function defaultValueSelector(x: any): any {
     return x;
 }
 
-function equal(a: any, b: any, path: string, arrayMeta: Record<string, DefaultedEquatorPropMeta>, skipAddPath?: boolean) : boolean {
+function equal(
+    a: any,
+    b: any,
+    path: string,
+    arrayMeta: Record<string, DefaultedEquatorPropMeta>,
+    skipAddPath?: boolean,
+): boolean {
     if (a === b) return true;
 
     if (a && typeof a == 'object') {
@@ -34,12 +38,14 @@ function equal(a: any, b: any, path: string, arrayMeta: Record<string, Defaulted
         if (b && typeof b == 'object') {
             var arrA = _.isArray(a),
                 arrB = _.isArray(b),
-                i, length, key;
+                i,
+                length,
+                key;
 
             if (arrA && arrB) {
                 if (a.length != b.length) {
                     return false;
-                } 
+                }
                 if (path in arrayMeta) {
                     var propMeta = arrayMeta[path];
                     if (!propMeta) {
@@ -47,13 +53,13 @@ function equal(a: any, b: any, path: string, arrayMeta: Record<string, Defaulted
                     }
                     var keySelector;
                     if (propMeta.keySelector) {
-                        keySelector = propMeta.keySelector
+                        keySelector = propMeta.keySelector;
                     } else {
                         keySelector = defaultKeySelector;
                     }
                     var valueSelector;
                     if (propMeta.valueSelector) {
-                        valueSelector = propMeta.valueSelector
+                        valueSelector = propMeta.valueSelector;
                     } else {
                         valueSelector = defaultValueSelector;
                     }
@@ -61,20 +67,19 @@ function equal(a: any, b: any, path: string, arrayMeta: Record<string, Defaulted
                     var dictB = makeDict(b, keySelector, valueSelector);
                     var currPath;
                     if (path) {
-                        currPath = path + ".[]";
+                        currPath = path + '.[]';
                     } else {
-                        currPath = "[]";
+                        currPath = '[]';
                     }
                     return equal(dictA, dictB, currPath, arrayMeta, true);
                 }
-                for (i = a.length; i-- !== 0;)
-                    if (!equal(a[i], b[i], path, arrayMeta)) return false;
+                for (i = a.length; i-- !== 0; ) if (!equal(a[i], b[i], path, arrayMeta)) return false;
                 return true;
             }
 
             if (arrA != arrB) {
-                return false;  
-            } 
+                return false;
+            }
 
             var dateA = a instanceof Date,
                 dateB = b instanceof Date;
@@ -87,7 +92,7 @@ function equal(a: any, b: any, path: string, arrayMeta: Record<string, Defaulted
             if (regexpA && regexpB) return a.toString() == b.toString();
 
             var keysA = _.keys(a);
-            for (i = keysA.length; i-- !== 0;) {
+            for (i = keysA.length; i-- !== 0; ) {
                 key = keysA[i];
                 if (Object.prototype.hasOwnProperty.call(b, key)) {
                     var currPath;
@@ -95,7 +100,7 @@ function equal(a: any, b: any, path: string, arrayMeta: Record<string, Defaulted
                         currPath = path;
                     } else {
                         if (path) {
-                            currPath = path + "." + key;
+                            currPath = path + '.' + key;
                         } else {
                             currPath = key;
                         }
@@ -107,30 +112,28 @@ function equal(a: any, b: any, path: string, arrayMeta: Record<string, Defaulted
             }
 
             var keysB = _.keys(b);
-            for (i = keysB.length; i-- !== 0;) {
+            for (i = keysB.length; i-- !== 0; ) {
                 key = keysB[i];
                 if (!Object.prototype.hasOwnProperty.call(a, key)) {
                     return false;
                 }
             }
-        
+
             return true;
         }
     }
 
     return a !== a && b !== b;
-};
+}
 
-
-function isDefaultedEqual(current : any, desired : any, arrayMeta? : Record<string, DefaultedEquatorPropMeta>) : boolean
-{
+function isDefaultedEqual(current: any, desired: any, arrayMeta?: Record<string, DefaultedEquatorPropMeta>): boolean {
     if (isNullOrUndefined(current) && isNullOrUndefined(desired)) {
         return true;
     }
     if (!arrayMeta) {
-        arrayMeta = {}
+        arrayMeta = {};
     }
-    return equal(current, desired, "", arrayMeta);
+    return equal(current, desired, '', arrayMeta);
 }
 
-export { isDefaultedEqual, DefaultedEquatorPropMeta }
+export { isDefaultedEqual, DefaultedEquatorPropMeta };
