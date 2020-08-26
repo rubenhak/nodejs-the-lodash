@@ -1,60 +1,47 @@
-// import * as _ from "lodash";
-
-// import * as _ './deep-clean';
-
-// export = _;
-
 import * as _ from "lodash";
+import { deepClean } from './deep-clean';
+import { replaceAll } from './string';
+import { isNullOrUndefined, isNotNullOrUndefined } from './null';
+import { fastDeepEqual } from './objects';
+import { isDefaultedEqual, DefaultedEquatorPropMeta } from './defaulted-equal';
+import { makeDict, makeBoolDict } from './make-dict';
+import { stableStringify } from './stable-stringify';
 
 interface LoDashMixins extends _.LoDashStatic {
-    deepClean<T>(o : any) : any;
+    deepClean(o : any) : any,
+
+    replaceAll(str : string, search : string, replacement : string) : string,
+
+    isNullOrUndefined(obj : any) : boolean,
+    isNotNullOrUndefined(obj : any) : boolean,
+
+    fastDeepEqual(a: any, b: any) : boolean,
+
+    isDefaultedEqual(current : any, desired : any, arrayMeta? : Record<string, DefaultedEquatorPropMeta>) : boolean,
+
+    makeDict<V>(items : any[], cbKey: (item: any) => string | number, cbValue: (item: any) => V) : Record<string | number, V>,
+    makeBoolDict(items : any[]) : Record<string | number, boolean>,
+
+    stableStringify(x: any) : string
 }
 
 _.mixin({ 
-    deepClean: deepClean
+    deepClean: deepClean,
+    replaceAll: replaceAll,
+    isNullOrUndefined: isNullOrUndefined,
+    isNotNullOrUndefined: isNotNullOrUndefined,
+    fastDeepEqual: fastDeepEqual,
+    isDefaultedEqual: isDefaultedEqual,
+    makeDict: makeDict,
+    makeBoolDict: makeBoolDict,
+    stableStringify: stableStringify
 });
 
-console.log("AAAA")
+const mixedLodash = forceCast<LoDashMixins>(_);
 
-function deepClean(o : any) : any {
-    if (_.isString(o)) {
-        return o;
-    }
-
-    if (_.isArray(o)) {
-        let another = []
-        for (let i = 0; i < o.length; i++) {
-            let val = o[i];
-            if (isObjectPresent(val)) {
-                another.push(deepClean(val));
-            }
-        }
-        return another;
-    }
-  
-    if (_.isObject(o)) {
-        let another : Record<string, any> = {};
-        for (let key of _.keys(o)) {
-            let val = _.get(o, key);
-            if (isObjectPresent(val)) {
-                another[key] = deepClean(val);
-            }
-        }
-        return another;
-    }
-  
-    return o;
+function forceCast<T>(input: any): T {
+    // @ts-ignore <-- forces TS compiler to compile this as-is
+    return input;
 }
 
-function isObjectPresent(o : any) : boolean
-{
-    if (_.isUndefined(o)) {
-        return false;
-    } 
-    if (_.isNaN(o)) {
-        return false;
-    }
-    return true;
-}
-
-export default LoDashMixins;
+export default mixedLodash;

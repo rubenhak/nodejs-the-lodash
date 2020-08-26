@@ -1,9 +1,7 @@
-var assert = require('assert');
-var should = require('should');
+import 'mocha';
+import should = require('should');
 
-var _ = require('../index');
-
-describe('defaulted-equal.js', function() {
+import _ from '../src';
 
     describe('_.isDefaultedEqual', function() {
         it('sample positive empty', function () {
@@ -60,8 +58,8 @@ describe('defaulted-equal.js', function() {
             var b = { }
             var result = _.isDefaultedEqual(a, b);
             should(result).be.exactly(true);
-            should(a.aaa).be.exactly(1234);
-            should.not.exist(b.aaa);
+            should(a).be.eql({ "aaa": 1234 });
+            should(b).be.eql({ });
         });
 
         it('sample args const check 2', function () {
@@ -69,8 +67,8 @@ describe('defaulted-equal.js', function() {
             var b = { "aaa": 1234 }
             var result = _.isDefaultedEqual(a, b);
             should(result).be.exactly(false);
-            should.not.exist(a.aaa);
-            should(b.aaa).be.exactly(1234);
+            should(a).be.eql({ });
+            should(b).be.eql({ "aaa": 1234 });
         });
 
         it('sample negative 1', function () {
@@ -168,13 +166,12 @@ describe('defaulted-equal.js', function() {
         it('string array different order, arrayMetaCorrector', function () {
             var a = { "aaa": ["a", "b", "c"]}
             var b = { "aaa": ["a", "c", "b"]}
-            var arrayMeta = {
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa": {
                     keySelector: x => x,
                     valueSelector: x => x
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -184,10 +181,11 @@ describe('defaulted-equal.js', function() {
         it('string array different order, arrayMetaCorrector default', function () {
             var a = { "aaa": ["a", "b", "c"]}
             var b = { "aaa": ["a", "c", "b"]}
-            var arrayMeta = {
-                "aaa": null
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+
+            var result = _.isDefaultedEqual(a, b, {
+                "aaa": {
+                }
+            });
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -197,10 +195,10 @@ describe('defaulted-equal.js', function() {
         it('string array different order, arrayMetaCorrector default deep', function () {
             var a = { "aaa": { "bbb":  ["a", "b", "c"]} }
             var b = { "aaa": { "bbb": ["a", "c", "b"]} }
-            var arrayMeta = {
-                "aaa.bbb": null
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+
+            var result = _.isDefaultedEqual(a, b, {
+                "aaa.bbb": {}
+            });
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -210,10 +208,8 @@ describe('defaulted-equal.js', function() {
         it('string array different order, arrayMetaCorrector default deep negative 1', function () {
             var a = { "aaa": { "bbb":  ["a", "c"]} }
             var b = { "aaa": { "bbb": ["a", "c", "b"]} }
-            var arrayMeta = {
-                "aaa.bbb": null
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+
+            var result = _.isDefaultedEqual(a, b, {});
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -223,10 +219,8 @@ describe('defaulted-equal.js', function() {
         it('string array different order, arrayMetaCorrector default deep negative 2', function () {
             var a = { "aaa": { "bbb":  ["a", "c", "b"]} }
             var b = { "aaa": { "bbb": ["a", "c"]} }
-            var arrayMeta = {
-                "aaa.bbb": null
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+
+            var result = _.isDefaultedEqual(a, b);
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -236,12 +230,12 @@ describe('defaulted-equal.js', function() {
         it('object array different order, arrayMetaCorrector default deep', function () {
             var a = { "aaa": { "bbb":  [ {"name": "a", "desc": "kuku"}, {"name": "b"}]} }
             var b = { "aaa": { "bbb": [{"name": "b"}, {"name": "a"}]} }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -251,10 +245,8 @@ describe('defaulted-equal.js', function() {
         it('object array different order, arrayMetaCorrector default deep extra inner base props', function () {
             var a = { "aaa": { "bbb":  [ {"name": "a", "desc": "kuku"}]} }
             var b = { "aaa": { "bbb": [{"name": "a"}]} }
-            var arrayMeta = {
-                // "aaa.bbb": null
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+
+            var result = _.isDefaultedEqual(a, b);
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -264,10 +256,8 @@ describe('defaulted-equal.js', function() {
         it('object array different order, arrayMetaCorrector default deep extra inner base props', function () {
             var a = { "aaa": { "bbb":  [ {"mimi": 1234, "name": "a", "desc": "kuku"}]} }
             var b = { "aaa": { "bbb": [{"name": "a"}]} }
-            var arrayMeta = {
-                // "aaa.bbb": null
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+
+            var result = _.isDefaultedEqual(a, b);
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -277,12 +267,12 @@ describe('defaulted-equal.js', function() {
         it('object array different order, arrayMetaCorrector default deep extra inner base ', function () {
             var a = { "aaa": { "bbb":  [ {"name": "b", "lala": "lulu"}, {"mimi": 1234, "name": "a", "desc": "kuku"}]} }
             var b = { "aaa": { "bbb": [{"name": "a"}, {"name": "b"} ]} }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -292,12 +282,12 @@ describe('defaulted-equal.js', function() {
         it('object array different order, arrayMetaCorrector default deep extra inner base ', function () {
             var a = { "aaa": { "bbb":  [ {"name": "b", "lala": "lulu"}, {"mimi": 1234, "name": "a", "desc": "kuku"}]} }
             var b = { "aaa": { "bbb": [{"name": "a"}, {"name": "c"} ]} }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -307,12 +297,12 @@ describe('defaulted-equal.js', function() {
         it('object array different order, arrayMetaCorrector default deep extra inner base props negative', function () {
             var a = { "aaa": { "bbb":  [ {"mimi": 1234, "name": "a", "desc": "kuku"}]} }
             var b = { "aaa": { "bbb": [{"name": "a", "mama": 1234} ]} }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -322,12 +312,12 @@ describe('defaulted-equal.js', function() {
         it('object array different order, arrayMetaCorrector default deep extra inner base props negative', function () {
             var a = { "aaa": { "bbb":  [ {"mimi": 1234, "name": "a", "desc": "kuku"}]} }
             var b = { "aaa": { "bbb": [{"name": "b"} ]} }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -337,10 +327,10 @@ describe('defaulted-equal.js', function() {
         it('object array different order, arrayMetaCorrector default deep negative', function () {
             var a = { "aaa": { "bbb":  [ {"name": "a", "desc": "kuku"}]} }
             var b = { "aaa": { "bbb": [{"name": "a", "desc": "kaka"}]} }
-            var arrayMeta = {
-                // "aaa.bbb": null
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+
+            var result = _.isDefaultedEqual(a, b, {
+                "aaa.bbb": {}
+            });
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -391,15 +381,15 @@ describe('defaulted-equal.js', function() {
                     ]
                 }
             }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 },
                 "aaa.bbb.[].data": {
                     keySelector: x => x.id
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -449,15 +439,15 @@ describe('defaulted-equal.js', function() {
                     ]
                 }
             }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 },
                 "aaa.bbb.[].data": {
                     keySelector: x => x.id
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -509,15 +499,15 @@ describe('defaulted-equal.js', function() {
                     ]
                 }
             }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 },
                 "aaa.bbb.[].data": {
                     keySelector: x => x.id
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -565,15 +555,15 @@ describe('defaulted-equal.js', function() {
                     ]
                 }
             }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 },
                 "aaa.bbb.[].data": {
                     keySelector: x => x.id
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -624,15 +614,15 @@ describe('defaulted-equal.js', function() {
                     ]
                 }
             }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 },
                 "aaa.bbb.[].data": {
                     keySelector: x => x.id
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(true);
 
             result = _.isDefaultedEqual(a, b);
@@ -684,15 +674,15 @@ describe('defaulted-equal.js', function() {
                     ]
                 }
             }
-            var arrayMeta = {
+
+            var result = _.isDefaultedEqual(a, b, {
                 "aaa.bbb": {
                     keySelector: x => x.name
                 },
                 "aaa.bbb.[].data": {
                     keySelector: x => x.id
                 }
-            }
-            var result = _.isDefaultedEqual(a, b, arrayMeta);
+            });
             should(result).be.exactly(false);
 
             result = _.isDefaultedEqual(a, b);
@@ -700,6 +690,3 @@ describe('defaulted-equal.js', function() {
         });
 
     });
-
-
-});

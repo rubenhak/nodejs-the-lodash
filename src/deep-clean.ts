@@ -1,15 +1,5 @@
 import * as _ from "lodash";
 
-interface LoDashMixins extends _.LoDashStatic {
-    deepClean(o : any) : any;
-}
-
-_.mixin({ 
-    deepClean: deepClean
-});
-
-console.log("AAAA")
-
 function deepClean(o : any) : any {
     if (_.isString(o)) {
         return o;
@@ -51,4 +41,4 @@ function isObjectPresent(o : any) : boolean
     return true;
 }
 
-export default <LoDashMixins>_;
+export { deepClean };

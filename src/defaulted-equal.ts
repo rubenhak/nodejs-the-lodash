@@ -1,42 +1,47 @@
-var _ = require('lodash');
+import * as _ from "lodash";
+import { isNullOrUndefined, isNotNullOrUndefined } from './null';
+import { makeDict } from './make-dict';
+import { stableStringify } from './stable-stringify';
 
-var isArray = Array.isArray;
-var keyList = Object.keys;
-var hasProp = Object.prototype.hasOwnProperty;
+interface DefaultedEquatorPropMeta {
+    keySelector?: (item: any) => any,
+    valueSelector?: (item: any) => any
+}
 
-function defaultKeySelector(x)
+function defaultKeySelector(x: any): any
 {
     if (typeof x === 'undefined') {
         return 'not-defined';
     }
     if (x && typeof x == 'object') {
-        return _.stableStringify(x);
+        return stableStringify(x);
     }
     return x;
 }
 
-function defaultValueSelector(x)
+function defaultValueSelector(x: any) : any
 {
     return x;
 }
 
-function equal(a, b, path, arrayMeta, skipAddPath) {
+function equal(a: any, b: any, path: string, arrayMeta: Record<string, DefaultedEquatorPropMeta>, skipAddPath?: boolean) : boolean {
     if (a === b) return true;
 
     if (a && typeof a == 'object') {
-        if (_.isNullOrUndefined(b)) {
+        if (isNullOrUndefined(b)) {
             return true;
         }
         if (b && typeof b == 'object') {
-            var arrA = isArray(a),
-                arrB = isArray(b),
+            var arrA = _.isArray(a),
+                arrB = _.isArray(b),
                 i, length, key;
 
             if (arrA && arrB) {
-                length = a.length;
-                if (length != b.length) return false;
+                if (a.length != b.length) {
+                    return false;
+                } 
                 if (path in arrayMeta) {
-                    propMeta = arrayMeta[path];
+                    var propMeta = arrayMeta[path];
                     if (!propMeta) {
                         propMeta = {};
                     }
@@ -52,8 +57,8 @@ function equal(a, b, path, arrayMeta, skipAddPath) {
                     } else {
                         valueSelector = defaultValueSelector;
                     }
-                    var dictA = _.makeDict(a, keySelector, valueSelector);
-                    var dictB = _.makeDict(b, keySelector, valueSelector);
+                    var dictA = makeDict(a, keySelector, valueSelector);
+                    var dictB = makeDict(b, keySelector, valueSelector);
                     var currPath;
                     if (path) {
                         currPath = path + ".[]";
@@ -62,7 +67,7 @@ function equal(a, b, path, arrayMeta, skipAddPath) {
                     }
                     return equal(dictA, dictB, currPath, arrayMeta, true);
                 }
-                for (i = length; i-- !== 0;)
+                for (i = a.length; i-- !== 0;)
                     if (!equal(a[i], b[i], path, arrayMeta)) return false;
                 return true;
             }
@@ -81,11 +86,10 @@ function equal(a, b, path, arrayMeta, skipAddPath) {
             if (regexpA != regexpB) return false;
             if (regexpA && regexpB) return a.toString() == b.toString();
 
-            var keysA = keyList(a);
-            lengthKeysA = keysA.length;
-            for (i = lengthKeysA; i-- !== 0;) {
+            var keysA = _.keys(a);
+            for (i = keysA.length; i-- !== 0;) {
                 key = keysA[i];
-                if (hasProp.call(b, key)) {
+                if (Object.prototype.hasOwnProperty.call(b, key)) {
                     var currPath;
                     if (skipAddPath) {
                         currPath = path;
@@ -102,11 +106,10 @@ function equal(a, b, path, arrayMeta, skipAddPath) {
                 }
             }
 
-            var keysB = keyList(b);
-            lengthKeysB = keysB.length;
-            for (i = lengthKeysB; i-- !== 0;) {
+            var keysB = _.keys(b);
+            for (i = keysB.length; i-- !== 0;) {
                 key = keysB[i];
-                if (!hasProp.call(a, key)) {
+                if (!Object.prototype.hasOwnProperty.call(a, key)) {
                     return false;
                 }
             }
@@ -118,14 +121,16 @@ function equal(a, b, path, arrayMeta, skipAddPath) {
     return a !== a && b !== b;
 };
 
-_.mixin({
-    'isDefaultedEqual': function (current, desired, arrayMeta) {
-        if (_.isNullOrUndefined(current) && _.isNullOrUndefined(desired)) {
-            return true;
-        }
-        if (!arrayMeta) {
-            arrayMeta = {}
-        }
-        return equal(current, desired, "", arrayMeta);
+
+function isDefaultedEqual(current : any, desired : any, arrayMeta? : Record<string, DefaultedEquatorPropMeta>) : boolean
+{
+    if (isNullOrUndefined(current) && isNullOrUndefined(desired)) {
+        return true;
     }
-});
+    if (!arrayMeta) {
+        arrayMeta = {}
+    }
+    return equal(current, desired, "", arrayMeta);
+}
+
+export { isDefaultedEqual, DefaultedEquatorPropMeta }
