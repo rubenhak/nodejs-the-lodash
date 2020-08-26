@@ -1,6 +1,6 @@
 {
   "name": "the-lodash",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Extension to lodash library",
   "main": "dist/index.js",
   "types": "dist",
@@ -17,8 +17,7 @@
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags",
-    "postinstall": "npm run build"
+    "postversion": "git push && git push --tags"
   },
   "author": "Ruben Hakopian <ruben.hakopian@gmail.com>",
   "license": "MIT",
