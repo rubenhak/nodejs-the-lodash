@@ -6,6 +6,8 @@ import { fastDeepEqual } from './objects';
 import { isDefaultedEqual, DefaultedEquatorPropMeta } from './defaulted-equal';
 import { makeDict, makeBoolDict } from './make-dict';
 import { stableStringify } from './stable-stringify';
+import { makeArray, makeBoolArray } from './make-array';
+import { randomElement } from './random'
 
 interface LoDashMixins extends _.LoDashStatic {
     deepClean(o : any) : any,
@@ -19,10 +21,18 @@ interface LoDashMixins extends _.LoDashStatic {
 
     isDefaultedEqual(current : any, desired : any, arrayMeta? : Record<string, DefaultedEquatorPropMeta>) : boolean,
 
-    makeDict<V>(items : any[], cbKey: (item: any) => string | number, cbValue: (item: any) => V) : Record<string | number, V>,
-    makeBoolDict(items : any[]) : Record<string | number, boolean>,
+    makeDict<V>(items : any[] | null, cbKey: (item: any) => string | number, cbValue: (item: any) => V) : Record<string | number, V>,
+    makeBoolDict(items : any[] | null) : Record<string | number, boolean>,
 
-    stableStringify(x: any) : string
+    stableStringify(x: any) : string,
+
+    makeArray<V>(obj : Record<string, any> | null, 
+        valueCb : (key: string, value: any) => V,
+        filterCb? : (key: string, value: any) => boolean
+        ) : V[],
+    makeBoolArray(obj : Record<string, any> | null) : any[],
+
+    randomElement<V>(obj?: V[]) : V
 }
 
 _.mixin({ 
@@ -34,7 +44,10 @@ _.mixin({
     isDefaultedEqual: isDefaultedEqual,
     makeDict: makeDict,
     makeBoolDict: makeBoolDict,
-    stableStringify: stableStringify
+    stableStringify: stableStringify,
+    makeArray: makeArray,
+    makeBoolArray: makeBoolArray,
+    randomElement: randomElement
 });
 
 const mixedLodash = forceCast<LoDashMixins>(_);

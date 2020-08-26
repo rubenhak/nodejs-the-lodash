@@ -1,9 +1,7 @@
-var assert = require('assert');
-var should = require('should');
+import 'mocha';
+import should = require('should');
 
-var _ = require('../index');
-
-describe('objects.js', function() {
+import _ from '../src';
 
     describe('_.fastDeepEqual', function() {
         it('sample positive 1', function () {
@@ -68,5 +66,3 @@ describe('objects.js', function() {
             should(result).be.exactly(false);
         });
     });
-
-});

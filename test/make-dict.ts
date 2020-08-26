@@ -1,9 +1,8 @@
-var assert = require('assert');
-var should = require('should');
+import 'mocha';
+import should = require('should');
 
-var _ = require('../index');
+import _ from '../src';
 
-describe('makeDict.js', function() {
     describe('_.makeDict', function() {
         it('sample1', function () {
             var data = [ ["aa", 123], ["bbb", 456]];
@@ -12,7 +11,7 @@ describe('makeDict.js', function() {
         });
 
         it('sample2', function () {
-            var data = [ ];
+            var data : string[] = [ ];
             var result = _.makeDict(data, x => x[0], x => x[1]);
             should(result).be.deepEqual({});
         });
@@ -39,4 +38,3 @@ describe('makeDict.js', function() {
         });
     });
     
-});

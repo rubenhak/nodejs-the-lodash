@@ -8,7 +8,7 @@ interface DefaultedEquatorPropMeta {
     valueSelector?: (item: any) => any
 }
 
-function defaultKeySelector(x: any): any
+function defaultKeySelector(x: any) : any
 {
     if (typeof x === 'undefined') {
         return 'not-defined';
