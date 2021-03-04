@@ -8,6 +8,7 @@ before_deploy:
   - ls -la
   - ls -la dist/
 deploy:
+  skip_cleanup: true
   provider: npm
   email: ruben.hakopian@gmail.com
   api_key:
