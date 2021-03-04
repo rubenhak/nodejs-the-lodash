@@ -12,7 +12,8 @@
     "build": "tsc",
     "format": "prettier --write ./src/ ./test/",
     "format-check": "prettier --write ./src/ ./test/",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prepublishOnly": "npm run build"
   },
   "author": "Ruben Hakopian <ruben.hakopian@gmail.com>",
   "license": "MIT",
