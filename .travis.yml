@@ -1,6 +1,10 @@
 language: node_js
 node_js:
 - stable
+before_deploy:
+  - pwd
+  - ls -la
+  - ls -la dist/
 deploy:
   provider: npm
   email: ruben.hakopian@gmail.com
