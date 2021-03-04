@@ -4,4 +4,27 @@ MY_DIR="$(dirname $MY_PATH)"
 cd $MY_DIR
 
 rm -rf ./dist
-npm publish
+
+./build.sh
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "BUILD failed"
+  exit 1;
+fi
+
+./run-test.sh
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "TEST failed"
+  exit 1;
+fi
+
+npm version patch
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "VERSION PATCH failed"
+  exit 1;
+fi
+
+git pull --rebase
+git push --follow-tags

@@ -61,3 +61,15 @@ Outputs:
     }
 }
 ```
+
+
+## Publishing
+
+```sh
+$ ./publish.sh
+```
+
+### Updating NPM Key
+```sh
+$ travis encrypt <NPM-KEY-GOES-HERE> --add deploy.api_key
+```

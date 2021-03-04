@@ -1,3 +1,11 @@
 language: node_js
 node_js:
-  - "stable"
+- stable
+deploy:
+  provider: npm
+  email: ruben.hakopian@gmail.com
+  api_key:
+    secure: dvxV4vnadC/2xYwP9AfOtyZN/wnC9Z/Czv+hBjem35VDuo4GsKBAtIYj+UWFqcq8IKxdtmXTTEqacPG6jIVZm2RlIB8/uN7QFenac/bKyCWGRTFHt/ZjQF2a/Hc40UfhOADXET3ATgpBVtUNqBREP2EK22LJyQn/RjZk50zJ+R+F+fT2TZomE/DpeXhyY09oShawgiPdt+iqH2MyJmqhB9Lolvo5fshHMkQZy5SdjWNfYn+sAtU9l6y1afjvZ5iQqNowdUR58X2/3owRdLuo9gRUNtG4Hsi1cLyckvp4bsgv38+R7HzpkI0miEGfga1ZeidErGXCqnkl7dJPyuMk7whl0MzcUhnp/FdNK4+qT068n3Q8E71bJ3IQQhfQRz1YrxTSOEXdqRQGJfP+K9TIpPjSEl7icONiQkzc3MFcf6xYZJvlQAUSaD4SpImrz/6GInV+g6fndYBkd6s3tXLtrmIkcxlyGIqSsbqDnJm057MmALzlWoFYZ6rynpmW74TBgyAIBEg1A05xwrsvQPEG2xa2XX7pIDsFd2CXkIZ91sLj4GmovayaUOS6Ff8xPxvcAMETOODuK5gs4+rYD1SQzY1XZJ3GMQfg7noPprQjrUNEQOVd/GODPVhvL038weqMPzp0yQPBp0tiTevhpDusj7qS6TaAissEOoTmXihdUUI=
+  on:
+    branch: master
+    tags: true
