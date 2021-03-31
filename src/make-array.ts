@@ -9,12 +9,12 @@ function makeArray<V>(
         return [];
     }
 
-    var keys = _.keys(obj);
+    let keys = _.keys(obj);
     if (filterCb) {
         keys = keys.filter((x) => filterCb(x, obj[x]));
     }
 
-    var res = keys.map((x) => valueCb(x, obj[x]));
+    let res = keys.map((x) => valueCb(x, obj[x]));
     return res;
 }
 

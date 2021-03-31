@@ -5,8 +5,8 @@ import _ from '../src';
 
 describe('_.randomElement', function () {
     it('sample1', function () {
-        var items = ['aa', 'bb', 'cc', 'dd'];
-        var result = _.randomElement(items);
+        let items = ['aa', 'bb', 'cc', 'dd'];
+        let result = _.randomElement(items);
         items.should.containEql(result);
     });
 
@@ -23,14 +23,14 @@ describe('_.randomElement', function () {
     });
 
     it('sample4', function () {
-        var items: string[] = [];
-        var result = _.randomElement(items);
+        let items: string[] = [];
+        let result = _.randomElement(items);
         should(result).be.exactly(null);
     });
 
     it('sample5', function () {
-        var items: number[] = [];
-        var result = _.randomElement(items);
+        let items: number[] = [];
+        let result = _.randomElement(items);
         should(result).be.exactly(null);
     });
 });

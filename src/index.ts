@@ -21,11 +21,11 @@ interface LoDashMixins extends _.LoDashStatic {
 
     isDefaultedEqual(current: any, desired: any, arrayMeta?: Record<string, DefaultedEquatorPropMeta>): boolean;
 
-    makeDict<V>(
-        items: any[] | null,
-        cbKey: (item: any) => string | number,
-        cbValue: (item: any) => V,
-    ): Record<string | number, V>;
+    makeDict<T = any, V = any>(
+        items: T[] | null,
+        cbKey: (item: T) => string | number,
+        cbValue: (item: T) => V,
+    ) : Record<string | number, V>;
     makeBoolDict(items: any[] | null): Record<string | number, boolean>;
 
     stableStringify(x: any): string;

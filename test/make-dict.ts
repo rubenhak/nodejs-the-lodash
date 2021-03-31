@@ -5,11 +5,11 @@ import _ from '../src';
 
 describe('_.makeDict', function () {
     it('sample1', function () {
-        var data = [
+        let data = [
             ['aa', 123],
             ['bbb', 456],
         ];
-        var result = _.makeDict(
+        let result = _.makeDict(
             data,
             (x) => x[0],
             (x) => x[1],
@@ -18,8 +18,8 @@ describe('_.makeDict', function () {
     });
 
     it('sample2', function () {
-        var data: string[] = [];
-        var result = _.makeDict(
+        let data: string[] = [];
+        let result = _.makeDict(
             data,
             (x) => x[0],
             (x) => x[1],
@@ -28,8 +28,8 @@ describe('_.makeDict', function () {
     });
 
     it('sample3', function () {
-        var data = null;
-        var result = _.makeDict(
+        let data = null;
+        let result = _.makeDict(
             data,
             (x) => x[0],
             (x) => x[1],
@@ -38,20 +38,50 @@ describe('_.makeDict', function () {
     });
 
     it('sample4', function () {
-        var data = null;
-        var result = _.makeDict(
+        let data = null;
+        let result = _.makeDict(
             data,
             (x) => x[0],
             (x) => x[1],
         );
         should(result).be.deepEqual({});
     });
+
+
+    it('sample5', function () {
+        let data : Contact[] = [
+            {
+                name: 'john',
+                phone: '1234'
+            },
+            {
+                name: 'jane',
+                phone: '6789'
+            },
+        ];
+        let result = _.makeDict(
+            data,
+            (x) => x.name,
+            (x) => x.phone,
+        );
+        should(result).be.deepEqual({
+            "jane": "6789",
+            "john": "1234"
+        });
+    });
 });
 
 describe('_.makeBoolDict', function () {
     it('sample1', function () {
-        var data = ['aaa', 'bbb'];
-        var result = _.makeBoolDict(data);
+        let data = ['aaa', 'bbb'];
+        let result = _.makeBoolDict(data);
         should(result).be.deepEqual({ aaa: true, bbb: true });
     });
 });
+
+
+interface Contact
+{
+    name: string,
+    phone: string
+}
