@@ -14,6 +14,8 @@ describe('heap', function () {
         heap.insert(20);
         heap.insert(7);
 
+        heap.print();
+
         should(heap.size).be.equal(4);
         should(heap.length).be.equal(4);
         should(heap.isEmpty).be.false();
@@ -36,6 +38,8 @@ describe('heap', function () {
         should(heap.length).be.equal(5);
         should(heap.isEmpty).be.false();
 
+        heap.print();
+
         should(heap.pop()).be.equal(1);
         should(heap.pop()).be.equal(3);
         should(heap.pop()).be.equal(15);
@@ -55,6 +59,8 @@ describe('heap', function () {
         should(heap.length).be.equal(5);
         should(heap.isEmpty).be.false();
 
+        heap.print();
+        
         should(heap.pop()).be.equal(30);
         should(heap.pop()).be.equal(20);
         should(heap.pop()).be.equal(15);

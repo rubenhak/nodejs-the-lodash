@@ -14,6 +14,11 @@ export class PriorityQueue<T>
     return this._heap.length;
   }
 
+  public get rawHeap() 
+  {
+    return this._heap;
+  }
+
   public peek() {
     return this._heap.length === 0 ? null : this._heap[0].value;
   }
@@ -23,7 +28,7 @@ export class PriorityQueue<T>
     this._heap.push({priority: priority, value: item});
     let i = this._heap.length -1;
     while(i > 0) {
-      const p = this.parent(i)
+      const p = this._parent(i)
       if(this._heap[p].priority < this._heap[i].priority) break
       const tmp = this._heap[i]
       this._heap[i] = this._heap[p]
@@ -32,7 +37,7 @@ export class PriorityQueue<T>
     }
   }
 
-  populate(items: T[], priorityFunc: (item: T) => number)
+  public populate(items: T[], priorityFunc: (item: T) => number)
   {
     for(const x of items)
     {
@@ -44,43 +49,54 @@ export class PriorityQueue<T>
   {
     if(this._heap.length == 0) return null
     
-    this.swap(0, this._heap.length - 1)
+    this._swap(0, this._heap.length - 1)
     const item = this._heap.pop()!;
 
     let current = 0
-    while(this.hasLeft(current)) {
-      let smallerChild = this.left(current)
-      if(this.hasRight(current) && this._heap[this.right(current)].priority < this._heap[this.left(current)].priority) 
-        smallerChild = this.right(current)
+    while(this._hasLeft(current)) {
+      let smallerChild = this._left(current)
+      if(this._hasRight(current) && this._heap[this._right(current)].priority < this._heap[this._left(current)].priority) 
+        smallerChild = this._right(current)
 
       if(this._heap[smallerChild].priority > this._heap[current].priority) break
 
-      this.swap(current, smallerChild)
+      this._swap(current, smallerChild)
       current = smallerChild
     }
 
     return item.value
   }
 
+  public print()
+  {
+    console.log(">>> -= PRIORITY QUEUE =-");
+    console.log(`>>> COUNT: ${this.length}`);
+    for(const x of this._heap)
+    {
+      console.log(`|   [${x.priority}] -> ${x.value}`);
+    }
+    console.log(">>> --------------------");
+  }
+
   /*****/
-  private parent(index: number) {
+  private _parent(index: number) {
     return Math.floor((index - 1) / 2);
   }
 
-  private left(index: number) {
+  private _left(index: number) {
     return 2 * index + 1;
   } 
-  private right(index: number) {
+  private _right(index: number) {
     return 2 * index + 2;
   }
-  private hasLeft(index: number) { 
-    return this.left(index) < this._heap.length;
+  private _hasLeft(index: number) { 
+    return this._left(index) < this._heap.length;
   }
-  private hasRight(index: number) {
-    return this.right(index) < this._heap.length;
+  private _hasRight(index: number) {
+    return this._right(index) < this._heap.length;
   }
 
-  private swap(a: number, b: number)
+  private _swap(a: number, b: number)
   {
     const tmp = this._heap[a];
     this._heap[a] = this._heap[b];

@@ -46,6 +46,8 @@ describe('priority-queue', function () {
         should(pq.length).be.equal(4);
         should(pq.isEmpty).be.false();
 
+        pq.print();
+
         should(pq.pop()).be.equal('bar');
         should(pq.pop()).be.equal('moo');
         should(pq.pop()).be.equal('foo');
@@ -64,6 +66,8 @@ describe('priority-queue', function () {
             'banana',
             'x'
         ], x => x.length);
+
+        pq.print();
 
         should(pq.size).be.equal(3);
         should(pq.length).be.equal(3);

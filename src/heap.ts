@@ -30,12 +30,17 @@ export class GenericHeap<T>
     return this._heap.length === 0 ? null : this._heap[0];
   }
 
+  public get rawHeap() 
+  {
+    return this._heap;
+  }
+
   public insert(item: T)
   {
     this._heap.push(item);
     let i = this._heap.length -1;
     while(i > 0) {
-      const p = this.parent(i)
+      const p = this._parent(i)
       if(this._comparer(this._heap[p], this._heap[i])) break;
       const tmp = this._heap[i]
       this._heap[i] = this._heap[p]
@@ -48,43 +53,55 @@ export class GenericHeap<T>
   {
     if(this._heap.length == 0) return null
     
-    this.swap(0, this._heap.length - 1)
+    this._swap(0, this._heap.length - 1)
     const item = this._heap.pop()!;
 
     let current = 0
-    while(this.hasLeft(current)) {
-      let smallerChild = this.left(current)
-      if(this.hasRight(current) && this._comparer(this._heap[this.right(current)], this._heap[this.left(current)])) 
-        smallerChild = this.right(current)
+    while(this._hasLeft(current)) {
+      let smallerChild = this._left(current)
+      if(this._hasRight(current) && this._comparer(this._heap[this._right(current)], this._heap[this._left(current)])) 
+        smallerChild = this._right(current)
 
       if(!this._comparer(this._heap[smallerChild], this._heap[current])) break
 
-      this.swap(current, smallerChild)
+      this._swap(current, smallerChild)
       current = smallerChild
     }
 
     return item;
   }
 
+  public print()
+  {
+    console.log(">>> -= HEAP =-");
+    console.log(`>>> COUNT: ${this.length}`);
+    for(const x of this._heap)
+    {
+      console.log(`|- ${x}`);
+    }
+    console.log(">>> --------------------");
+  }
+
+
   /*****/
-  private parent(index: number) {
+  private _parent(index: number) {
     return Math.floor((index - 1) / 2);
   }
 
-  private left(index: number) {
+  private _left(index: number) {
     return 2 * index + 1;
   } 
-  private right(index: number) {
+  private _right(index: number) {
     return 2 * index + 2;
   }
-  private hasLeft(index: number) { 
-    return this.left(index) < this._heap.length;
+  private _hasLeft(index: number) { 
+    return this._left(index) < this._heap.length;
   }
-  private hasRight(index: number) {
-    return this.right(index) < this._heap.length;
+  private _hasRight(index: number) {
+    return this._right(index) < this._heap.length;
   }
 
-  private swap(a: number, b: number)
+  private _swap(a: number, b: number)
   {
     const tmp = this._heap[a];
     this._heap[a] = this._heap[b];
