@@ -62,4 +62,6 @@ function forceCast<T>(input: any): T {
     return input;
 }
 
+export { PriorityQueue } from './priority-queue';
+
 export default mixedLodash;
