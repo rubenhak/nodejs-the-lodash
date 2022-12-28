@@ -63,5 +63,6 @@ function forceCast<T>(input: any): T {
 }
 
 export { PriorityQueue } from './priority-queue';
+export { GenericHeap, MinHeap, MaxHeap, HeapPriorityQueue } from './heap';
 
 export default mixedLodash;

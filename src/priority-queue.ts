@@ -20,15 +20,23 @@ export class PriorityQueue<T>
 
   public insert(item: T, priority: number)
   {
-    this._heap.push({key: priority, value: item});
+    this._heap.push({priority: priority, value: item});
     let i = this._heap.length -1;
     while(i > 0) {
       const p = this.parent(i)
-      if(this._heap[p].key < this._heap[i].key) break
+      if(this._heap[p].priority < this._heap[i].priority) break
       const tmp = this._heap[i]
       this._heap[i] = this._heap[p]
       this._heap[p] = tmp
       i = p
+    }
+  }
+
+  populate(items: T[], priorityFunc: (item: T) => number)
+  {
+    for(const x of items)
+    {
+      this.insert(x, priorityFunc(x));
     }
   }
       
@@ -42,10 +50,10 @@ export class PriorityQueue<T>
     let current = 0
     while(this.hasLeft(current)) {
       let smallerChild = this.left(current)
-      if(this.hasRight(current) && this._heap[this.right(current)].key < this._heap[this.left(current)].key) 
+      if(this.hasRight(current) && this._heap[this.right(current)].priority < this._heap[this.left(current)].priority) 
         smallerChild = this.right(current)
 
-      if(this._heap[smallerChild].key > this._heap[current].key) break
+      if(this._heap[smallerChild].priority > this._heap[current].priority) break
 
       this.swap(current, smallerChild)
       current = smallerChild
@@ -81,6 +89,6 @@ export class PriorityQueue<T>
 }
 
 interface PriorityQueueNode<T> {
-  key: number
-  value: T
+  value: T,
+  priority: number,
 }
