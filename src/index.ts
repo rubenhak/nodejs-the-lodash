@@ -62,6 +62,8 @@ function forceCast<T>(input: any): T {
     return input;
 }
 
+export { Stack } from './stack';
+export { Queue } from './queue';
 export { PriorityQueue } from './priority-queue';
 export { GenericHeap, MinHeap, MaxHeap, HeapPriorityQueue } from './heap';
 
