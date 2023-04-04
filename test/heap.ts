@@ -1,5 +1,5 @@
 import 'mocha';
-import should = require('should');
+import should from 'should';
 
 import { GenericHeap, MinHeap, MaxHeap, HeapPriorityQueue } from '../src';
 

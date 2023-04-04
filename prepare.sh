@@ -6,5 +6,6 @@ cd $MY_DIR
 rm -rf node_modules/
 rm -rf dist/
 
-npm install
-npm update fast-deep-equal fast-json-stable-stringify lodash
+# npm install
+# npm update fast-deep-equal fast-json-stable-stringify lodash
+yarn
