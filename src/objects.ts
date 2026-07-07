@@ -1,8 +1,7 @@
-import * as _ from 'lodash';
 import equal from 'fast-deep-equal';
-import { isNullOrUndefined, isNotNullOrUndefined } from './null';
+import { isNullOrUndefined } from './null';
 
-function fastDeepEqual(a: any, b: any): boolean {
+function fastDeepEqual(a: unknown, b: unknown): boolean {
     if (isNullOrUndefined(a) && isNullOrUndefined(b)) {
         return true;
     }

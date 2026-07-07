@@ -8,7 +8,7 @@ describe('_.makeArray', function () {
         let data = { aaa: true, bbb: false, ccc: true };
         let result = _.makeArray(
             data,
-            (k, v) => k,
+            (k) => k,
             (k, v) => v,
         );
         should(result).be.deepEqual(['aaa', 'ccc']);

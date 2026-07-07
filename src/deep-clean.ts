@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-function deepClean(o: any): any {
+function deepClean(o: unknown): unknown {
     if (_.isString(o)) {
         return o;
     }
@@ -17,7 +17,7 @@ function deepClean(o: any): any {
     }
 
     if (_.isObject(o)) {
-        let another: Record<string, any> = {};
+        let another: Record<string, unknown> = {};
         for (let key of _.keys(o)) {
             let val = _.get(o, key);
             if (isObjectPresent(val)) {
@@ -30,7 +30,7 @@ function deepClean(o: any): any {
     return o;
 }
 
-function isObjectPresent(o: any): boolean {
+function isObjectPresent(o: unknown): boolean {
     if (_.isUndefined(o)) {
         return false;
     }

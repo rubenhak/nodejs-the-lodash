@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 
 function makeArray<V>(
-    obj: Record<string, any> | null,
-    valueCb: (key: string, value: any) => V,
-    filterCb?: (key: string, value: any) => boolean,
+    obj: Record<string, unknown> | null,
+    valueCb: (key: string, value: unknown) => V,
+    filterCb?: (key: string, value: unknown) => boolean,
 ): V[] {
     if (!obj) {
         return [];
@@ -18,11 +18,11 @@ function makeArray<V>(
     return res;
 }
 
-function makeBoolArray(obj: Record<string, any> | null): any[] {
+function makeBoolArray(obj: Record<string, unknown> | null): string[] {
     return makeArray(
         obj,
-        (k, v) => k,
-        (k, v) => v,
+        (k) => k,
+        (k, v) => !!v,
     );
 }
 

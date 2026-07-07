@@ -1,30 +1,32 @@
 import * as _ from 'lodash';
-import { isNullOrUndefined, isNotNullOrUndefined } from './null';
+import { isNullOrUndefined } from './null';
 import { makeDict } from './make-dict';
 import { stableStringify } from './stable-stringify';
 
 interface DefaultedEquatorPropMeta {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- consumers select on arbitrary item shapes
     keySelector?: (item: any) => any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- consumers select on arbitrary item shapes
     valueSelector?: (item: any) => any;
 }
 
-function defaultKeySelector(x: any): any {
+function defaultKeySelector(x: unknown): string | number {
     if (typeof x === 'undefined') {
         return 'not-defined';
     }
     if (x && typeof x == 'object') {
         return stableStringify(x);
     }
-    return x;
+    return x as string | number;
 }
 
-function defaultValueSelector(x: any): any {
+function defaultValueSelector(x: unknown): unknown {
     return x;
 }
 
 function equal(
-    a: any,
-    b: any,
+    a: unknown,
+    b: unknown,
     path: string,
     arrayMeta: Record<string, DefaultedEquatorPropMeta>,
     skipAddPath?: boolean,
@@ -39,11 +41,12 @@ function equal(
             var arrA = _.isArray(a),
                 arrB = _.isArray(b),
                 i,
-                length,
                 key;
 
             if (arrA && arrB) {
-                if (a.length != b.length) {
+                var arrayA = a as unknown[];
+                var arrayB = b as unknown[];
+                if (arrayA.length != arrayB.length) {
                     return false;
                 }
                 if (path in arrayMeta) {
@@ -63,9 +66,9 @@ function equal(
                     } else {
                         valueSelector = defaultValueSelector;
                     }
-                    var dictA = makeDict(a, keySelector, valueSelector);
-                    var dictB = makeDict(b, keySelector, valueSelector);
-                    var currPath;
+                    var dictA = makeDict(arrayA, keySelector, valueSelector);
+                    var dictB = makeDict(arrayB, keySelector, valueSelector);
+                    let currPath;
                     if (path) {
                         currPath = path + '.[]';
                     } else {
@@ -73,7 +76,7 @@ function equal(
                     }
                     return equal(dictA, dictB, currPath, arrayMeta, true);
                 }
-                for (i = a.length; i-- !== 0; ) if (!equal(a[i], b[i], path, arrayMeta)) return false;
+                for (i = arrayA.length; i-- !== 0; ) if (!equal(arrayA[i], arrayB[i], path, arrayMeta)) return false;
                 return true;
             }
 
@@ -84,18 +87,21 @@ function equal(
             var dateA = a instanceof Date,
                 dateB = b instanceof Date;
             if (dateA != dateB) return false;
-            if (dateA && dateB) return a.getTime() == b.getTime();
+            if (dateA && dateB) return (a as Date).getTime() == (b as Date).getTime();
 
             var regexpA = a instanceof RegExp,
                 regexpB = b instanceof RegExp;
             if (regexpA != regexpB) return false;
-            if (regexpA && regexpB) return a.toString() == b.toString();
+            if (regexpA && regexpB) return (a as RegExp).toString() == (b as RegExp).toString();
 
-            var keysA = _.keys(a);
+            var objA = a as Record<string, unknown>;
+            var objB = b as Record<string, unknown>;
+
+            var keysA = _.keys(objA);
             for (i = keysA.length; i-- !== 0; ) {
                 key = keysA[i];
-                if (Object.prototype.hasOwnProperty.call(b, key)) {
-                    var currPath;
+                if (Object.prototype.hasOwnProperty.call(objB, key)) {
+                    let currPath;
                     if (skipAddPath) {
                         currPath = path;
                     } else {
@@ -105,16 +111,16 @@ function equal(
                             currPath = key;
                         }
                     }
-                    if (!equal(a[key], b[key], currPath, arrayMeta)) {
+                    if (!equal(objA[key], objB[key], currPath, arrayMeta)) {
                         return false;
                     }
                 }
             }
 
-            var keysB = _.keys(b);
+            var keysB = _.keys(objB);
             for (i = keysB.length; i-- !== 0; ) {
                 key = keysB[i];
-                if (!Object.prototype.hasOwnProperty.call(a, key)) {
+                if (!Object.prototype.hasOwnProperty.call(objA, key)) {
                     return false;
                 }
             }
@@ -126,7 +132,7 @@ function equal(
     return a !== a && b !== b;
 }
 
-function isDefaultedEqual(current: any, desired: any, arrayMeta?: Record<string, DefaultedEquatorPropMeta>): boolean {
+function isDefaultedEqual(current: unknown, desired: unknown, arrayMeta?: Record<string, DefaultedEquatorPropMeta>): boolean {
     if (isNullOrUndefined(current) && isNullOrUndefined(desired)) {
         return true;
     }
