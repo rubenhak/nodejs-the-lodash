@@ -25,10 +25,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      # - name: Ensure npm supports trusted publishing
-      #   # Trusted publishing (OIDC) requires npm >= 11.5.1.
-      #   run: npm install -g npm@latest
-
       - name: Prepare Dependencies
         run: pnpm install --frozen-lockfile
 
@@ -42,7 +38,7 @@ jobs:
         if: >-
           github.ref == 'refs/heads/main' &&
           github.event_name == 'push' &&
-          !contains(github.event.head_commit.message, 'Version Release')
+          !contains(github.event.head_commit.message, '🤖 Version Release')
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.email "cicd@rubenhak.com"
@@ -67,6 +63,6 @@ jobs:
 
           # Record the release in git only after a successful publish, and push
           # the commit and tag together so the branch and tags never get out of sync.
-          git commit -am "Version Release v${NEW_VERSION}"
+          git commit -am "🤖 Version Release v${NEW_VERSION}"
           git tag "v${NEW_VERSION}"
           git push --follow-tags
