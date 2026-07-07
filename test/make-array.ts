@@ -9,7 +9,7 @@ describe('_.makeArray', function () {
         let result = _.makeArray(
             data,
             (k) => k,
-            (k, v) => v,
+            (k, v) => !!v,
         );
         should(result).be.deepEqual(['aaa', 'ccc']);
     });
@@ -19,7 +19,7 @@ describe('_.makeArray', function () {
         let result = _.makeArray(
             data,
             (k, v) => v,
-            (k, v) => v,
+            (k, v) => !!v,
         );
         should(result).be.deepEqual([]);
     });
