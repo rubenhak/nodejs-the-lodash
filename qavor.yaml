@@ -1,0 +1,12 @@
+---
+kind: project
+name: the-lodash
+standalone: true
+
+---
+kind: service
+name: the-lodash
+description: Extension to Lodash library
+
+profiles:
+  - https://raw.githubusercontent.com/rubenhak/qavor/refs/heads/main/profiles/node-library/qavor.yaml

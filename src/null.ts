@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
 
-function isNullOrUndefined(obj: any): boolean {
+function isNullOrUndefined(obj: unknown): boolean {
     return _.isNull(obj) || _.isUndefined(obj);
 }
 
-function isNotNullOrUndefined(obj: any): boolean {
+function isNotNullOrUndefined(obj: unknown): boolean {
     return !_.isNull(obj) && !_.isUndefined(obj);
 }
 

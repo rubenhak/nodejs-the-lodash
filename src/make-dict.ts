@@ -1,5 +1,4 @@
-import * as _ from 'lodash';
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- fallback when items is null and T/V can't be inferred from a caller-supplied element type
 function makeDict<T = any, V = any>(
     items: T[] | null,
     cbKey: (item: T) => string | number,
@@ -16,11 +15,11 @@ function makeDict<T = any, V = any>(
     return result;
 }
 
-function makeBoolDict(items: any[] | null) : Record<string | number, boolean> {
+function makeBoolDict(items: (string | number)[] | null): Record<string | number, boolean> {
     return makeDict(
         items,
         (x) => x,
-        (x) => true,
+        () => true,
     );
 }
 

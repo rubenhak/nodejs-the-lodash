@@ -33,16 +33,13 @@ describe('_.fastDeepEqual', function () {
     });
 
     it('sample undefineds', function () {
-        let a;
-        let b;
-        let result = _.fastDeepEqual(a, b);
+        let result = _.fastDeepEqual(undefined, undefined);
         should(result).be.exactly(true);
     });
 
     it('sample null & undefined', function () {
         let a = null;
-        let b;
-        let result = _.fastDeepEqual(a, b);
+        let result = _.fastDeepEqual(a, undefined);
         should(result).be.exactly(true);
     });
 });

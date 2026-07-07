@@ -13,8 +13,7 @@ describe('_.isNullOrUndefined', function () {
         should(result).be.exactly(true);
     });
     it('undefined value', function () {
-        let x;
-        let result = _.isNullOrUndefined(x);
+        let result = _.isNullOrUndefined(undefined);
         should(result).be.exactly(true);
     });
     it('string value', function () {
@@ -57,8 +56,7 @@ describe('_.isNotNullOrUndefined', function () {
         should(result).be.exactly(false);
     });
     it('undefined value', function () {
-        let x;
-        let result = _.isNotNullOrUndefined(x);
+        let result = _.isNotNullOrUndefined(undefined);
         should(result).be.exactly(false);
     });
     it('string value', function () {

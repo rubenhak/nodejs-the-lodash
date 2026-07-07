@@ -102,16 +102,13 @@ describe('_.isDefaultedEqual', function () {
     });
 
     it('sample undefineds', function () {
-        let a;
-        let b;
-        let result = _.isDefaultedEqual(a, b);
+        let result = _.isDefaultedEqual(undefined, undefined);
         should(result).be.exactly(true);
     });
 
     it('sample null & undefined', function () {
         let a = null;
-        let b;
-        let result = _.isDefaultedEqual(a, b);
+        let result = _.isDefaultedEqual(a, undefined);
         should(result).be.exactly(true);
     });
 
