@@ -64,5 +64,7 @@ jobs:
           # Record the release in git only after a successful publish, and push
           # the commit and tag together so the branch and tags never get out of sync.
           git commit -am "🤖 Version Release v${NEW_VERSION}"
-          git tag "v${NEW_VERSION}"
+          # Annotated tag (-a): git push --follow-tags only pushes annotated
+          # tags, so a lightweight tag here would never reach the remote.
+          git tag -a "v${NEW_VERSION}" -m "🤖 Version Release v${NEW_VERSION}"
           git push --follow-tags
